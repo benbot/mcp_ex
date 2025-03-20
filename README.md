@@ -22,6 +22,16 @@ Notable missing features. I'll get to these in no particular order:
 - [ ] Full documentation
 - [ ] proper timeout handling when running functions
 
+- [ ] read resources
+- [ ] resource templates
+- [ ] resource subscriptions
+
+- [ ] list tools
+- [ ] calling tools
+
+- [ ] many missing datatypes for tools
+- [ ] missing most content types for prompts
+
 Features that do exist:
 
 - Spark based DSL for defining prompts, resources, and tools
