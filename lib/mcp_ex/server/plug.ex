@@ -24,7 +24,7 @@ defmodule McpEx.Server.Plug do
       |> keep_alive_headers()
       |> send_chunked(200)
 
-    id = UUID.uuid4()
+    id = "jep"#UUID.uuid4()
     {:ok, _} = Registry.register(McpEx.SSERegistry, id, nil)
 
     {:ok, conn} = conn |> chunk("event: connected\n\n")

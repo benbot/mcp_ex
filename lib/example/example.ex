@@ -15,6 +15,8 @@ defmodule McpEx.Example do
 
   resources do
     resource "test"
+
+    resource "other source"
   end
 
   tools do
