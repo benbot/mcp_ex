@@ -7,6 +7,8 @@ Made to learn more about Spark, MCP, and Elixir Macros
 WARNING: Very VERY EARLY SOFTWARE. Not what I would call "usable" yet.
 NOT FEATURE COMPLETE.
 
+please check the `example.ex` for example of how to use it and the hurl files for examples of the requests needed to make
+
 Notable missing features. I'll get to these in no particular order:
 
 - [ ] DSL Validation
