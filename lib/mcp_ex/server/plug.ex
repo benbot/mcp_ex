@@ -1,4 +1,4 @@
-defmodule McpEx.Server.Plug do
+defmodule McpEx.Server.SSEPlug do
   require Logger
 
   alias McpEx.Proto.ListPromptResponse

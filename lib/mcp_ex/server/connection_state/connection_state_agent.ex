@@ -7,7 +7,7 @@ defmodule McpEx.Server.ConnectionState.Agent do
   end
 
   def initialize_state(module, params, id) do
-    {:ok, state, response} = ConnectionState.inititalize_state(
+    {:ok, state, response} = ConnectionState.initialize_state(
       module,
       params,
       id

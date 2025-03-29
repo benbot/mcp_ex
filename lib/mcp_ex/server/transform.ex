@@ -10,7 +10,7 @@ defmodule McpEx.Server.Transform do
         alias McpEx.Server
 
         def init(opts), do: [spark_mod: __MODULE__]
-        def call(conn, opts), do: Server.Plug.call(conn, Server.Plug.init(opts))
+        def call(conn, opts), do: Server.SSEPlug.call(conn, Server.SSEPlug.init(opts))
       end
 
     sse? = Spark.Dsl.Transformer.get_option(map, [:transports], :sse?)
