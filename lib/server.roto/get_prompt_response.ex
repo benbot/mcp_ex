@@ -4,8 +4,7 @@ defmodule McpEx.Proto.GetPromptResponse do
   import Ecto.Changeset
   import PolymorphicEmbed
 
-  @primary_key false
-  schema "prompt_response" do
+  embedded_schema do
     field(:description, :string)
 
     embeds_many(:messages, PromptMessage)
@@ -25,7 +24,6 @@ defmodule McpEx.Proto.PromptMessage do
   import Ecto.Changeset
   import PolymorphicEmbed
 
-  @primary_key false
   embedded_schema do
     field(:role, :string)
 

@@ -3,7 +3,6 @@ defmodule McpEx.Server.ClientDesc do
 
   defmodule ClientInfo do
     use Ecto.Schema
-    @primary_key false
 
     embedded_schema do
       field(:name, :string)
@@ -19,11 +18,9 @@ defmodule McpEx.Server.ClientDesc do
 
   defmodule ClientCapabilities do
     use Ecto.Schema
-    @primary_key false
 
     defmodule Roots do
       use Ecto.Schema
-      @primary_key false
 
       embedded_schema do
         field(:list_changed, :boolean)

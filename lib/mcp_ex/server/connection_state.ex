@@ -3,9 +3,8 @@ defmodule McpEx.Server.ConnectionState do
   import Ecto.Changeset
   alias McpEx.Server.ClientDesc.ClientInfo
   alias McpEx.Server.ClientDesc.ClientCapabilities
-  @primary_key {:id, :string, autogenerate: false}
 
-  schema "connection_state" do
+  embedded_schema do
     embeds_one(:client_capabilities, ClientCapabilities)
     embeds_one(:client_info, ClientInfo)
   end

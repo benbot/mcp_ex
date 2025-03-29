@@ -6,7 +6,7 @@ defmodule McpEx.Proto.Prompt do
   alias McpEx.Proto.PromptArg
   require Logger
 
-  schema "prompt" do
+  embedded_schema do
     field(:name, :string)
     field(:description, :string)
     field(:handler, :any, virtual: true)

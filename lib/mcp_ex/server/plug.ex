@@ -18,6 +18,21 @@ defmodule McpEx.Server.Plug do
     |> super(opts)
   end
 
+  get "/sse" do
+    conn =
+      conn
+      |> keep_alive_headers()
+      |> send_chunked(200)
+
+    id = "jep"#UUID.uuid4()
+    {:ok, _} = Registry.register(McpEx.SSERegistry, id, nil)
+
+    {:ok, conn} = conn |> chunk("event: connected\n\n")
+    {:ok, conn} = conn |> chunk("endpoint: http://localhost:4000/mcp?init_id=#{id}\n\n")
+
+    loop(conn)
+  end
+
   post "/sse" do
     conn =
       conn
@@ -25,6 +40,7 @@ defmodule McpEx.Server.Plug do
       |> send_chunked(200)
 
     id = "jep"#UUID.uuid4()
+    IO.inspect("registering")
     {:ok, _} = Registry.register(McpEx.SSERegistry, id, nil)
 
     {:ok, conn} = conn |> chunk("event: connected\n\n")
@@ -55,8 +71,8 @@ defmodule McpEx.Server.Plug do
   defp handle_message(conn, %{"id" => msg_id, "method" => "initialize"} = body) do
     id = conn.path_params["session_id"]
 
-    res = ConnectionState.initialize_state(conn.private.spark_mod, body["params"], id)
-    {:ok, state, response} = res
+    {:ok, state, response} = 
+      ConnectionState.initialize_state(conn.private.spark_mod, body["params"], id)
 
     get_pid_from_id(id)
     |> send({:initialize, state, response, msg_id})

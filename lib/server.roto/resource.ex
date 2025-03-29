@@ -3,8 +3,7 @@ defmodule McpEx.Proto.Resource do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
-  schema "resource" do
+  embedded_schema do
     field(:uri, :string)
     field(:name, :string)
 

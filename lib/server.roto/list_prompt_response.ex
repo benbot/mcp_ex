@@ -2,8 +2,7 @@ defmodule McpEx.Proto.ListPromptResponse do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
-  schema "prompts_list_result" do
+  embedded_schema do
     field(:description, :string)
     field(:name, :string)
 

@@ -2,9 +2,8 @@ defmodule McpEx.Proto.ListResourceResult do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @primary_key false
-  schema "prompts_list_result" do
-    field :resources, :list
+  embedded_schema do
+    embeds_many :resources, McpEx.Proto.Resource
   end
 
   def changeset(%__MODULE__{} = response, attrs) do
@@ -19,10 +18,8 @@ end
 
 defmodule McpEx.Proto.TextResourceContents do
   use Ecto.Schema
-  import Echo.Changeset
+  import Ecto.Changeset
 
-
-  @primary_key false
   embedded_schema do
     field :uri, :string
     field :mime_type, :string
@@ -38,10 +35,8 @@ end
 
 defmodule McpEx.Proto.BlobResourceContents do
   use Ecto.Schema
-  import Echo.Changeset
+  import Ecto.Changeset
 
-
-  @primary_key false
   embedded_schema do
     field :uri, :string
     field :mime_type, :string
