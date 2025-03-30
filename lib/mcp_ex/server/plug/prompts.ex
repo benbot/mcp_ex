@@ -20,7 +20,7 @@ defmodule McpEx.Server.Plug.Prompts do
           |> then(&Proto.Response.with_result(%{prompts: &1}, msg_id))
 
         conn
-        |> Server.Plug.send_sse_message(resp)
+        |> Server.SSEPlug.send_sse_message(resp)
 
       true ->
         conn
@@ -41,7 +41,7 @@ defmodule McpEx.Server.Plug.Prompts do
           |> Map.from_struct()
           |> Map.drop([:__meta__])
 
-        conn |> Server.Plug.send_sse_message(Proto.Response.with_result(resp, msg_id))
+        conn |> Server.SSEPlug.send_sse_message(Proto.Response.with_result(resp, msg_id))
 
       true ->
         conn

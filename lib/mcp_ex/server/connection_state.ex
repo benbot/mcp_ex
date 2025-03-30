@@ -9,6 +9,8 @@ defmodule McpEx.Server.ConnectionState do
     embeds_one(:client_info, ClientInfo)
   end
 
+  @supported_versions ["2024-11-05"]
+
   def changeset(state, attrs) do
     state
     |> cast(attrs, [])
@@ -27,6 +29,7 @@ defmodule McpEx.Server.ConnectionState do
         },
         id
       ) do
+
     cs =
       changeset(%__MODULE__{}, %{
         client_capabilities: capabilities,
@@ -59,7 +62,8 @@ defmodule McpEx.Server.ConnectionState do
     {:ok, cs |> apply_changes(), response}
   end
 
-  def initialize_state(_) do
-    {:error, :bad_init, "Bad initialize message"}
-  end
+  def initialize_state(_, %{ "protocolVersion" => version }, id) do
+    {:error, -32602, "Unsupported protocol version.", %{supported: @supported_versions, requested: version}, id}
+  end 
+
 end

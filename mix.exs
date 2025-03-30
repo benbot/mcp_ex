@@ -28,7 +28,8 @@ defmodule McpEx.MixProject do
       {:poison, "~> 6.0.0"},
       {:elixir_uuid, "~> 1.2"},
       {:polymorphic_embed, "~> 5.0"},
-      {:sourceror, "~> 1.7", only: [:dev, :test]}
+      {:sourceror, "~> 1.7", only: [:dev, :test]},
+      {:shorthand, "~> 1.2.0"},
     ]
   end
 end

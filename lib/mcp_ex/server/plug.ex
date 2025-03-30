@@ -71,11 +71,14 @@ defmodule McpEx.Server.SSEPlug do
   defp handle_message(conn, %{"id" => msg_id, "method" => "initialize"} = body) do
     id = conn.path_params["session_id"]
 
-    {:ok, state, response} = 
-      ConnectionState.initialize_state(conn.private.spark_mod, body["params"], id)
+    msg = case ConnectionState.initialize_state(conn.private.spark_mod, body["params"], id) do
+      {:ok, state, response} -> {:initialize, state, response, msg_id}
+      {:error, _code, _message, _data, _id} = msg ->  msg
+    end
+
 
     get_pid_from_id(id)
-    |> send({:initialize, state, response, msg_id})
+    |> send(msg)
 
     conn |> send_resp(200, "OK")
   end
@@ -107,6 +110,14 @@ defmodule McpEx.Server.SSEPlug do
     conn |> send_resp(200, "OK")
   end
 
+  defp handle_message(conn, %{"id" => msg_id, "method" => "resources/read", "params" => params}) do
+    conn.path_params["session_id"]
+    |> get_pid_from_id()
+    |> send({:resources_list, msg_id})
+
+    conn |> send_resp(200, "OK")
+  end
+
   # Handle Notifications
   defp handle_message(%{assigns: %{state: _state}} = _conn, %{"method" => _method} = _body) do
     raise "IMPL NOTIF"
@@ -121,11 +132,17 @@ defmodule McpEx.Server.SSEPlug do
     McpEx.Utils.unless_halted conn do
       receive do
         {:initialize, state, msg, msg_id} ->
+          
+          true = 
+            :ets.new(:connection_state, [:set, :private])
+            |> :ets.insert_new({:state, state})
+
           conn
           |> assign(:state, state)
           |> send_sse_message(Proto.Response.with_result(msg, msg_id))
           |> loop()
-
+        {:error, code, message, data, id} ->
+          conn |> send_sse_message(Proto.Response.with_error(code, message, data, id)) |> halt()
         {:prompts_list, msg_id} ->
           conn =
             conn |> ensure_initialized()

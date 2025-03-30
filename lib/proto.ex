@@ -32,7 +32,7 @@ defmodule McpEx.Proto.Request do
 end
 
 defmodule McpEx.Proto.Response do
-  @derive [Poison.Decoder]
+  import Shorthand
 
   defstruct [
     :id,
@@ -41,14 +41,35 @@ defmodule McpEx.Proto.Response do
     :error
   ]
 
-  @spec with_result(map() | list(), String.t()) :: String.t()
+  @spec with_result(map() | list(), String.t() | integer()) :: String.t()
   def with_result(result, message_id) do
     Poison.encode!(%__MODULE__{
       jsonrpc: "2.0",
       id: message_id,
-      result: result
-    })
+      result: result |> clean_nulls(),
+    } |> clean_nulls())
   end
+
+  @spec with_error(integer(), String.t(), map() | list(), String.t() | integer()) :: String.t()
+  def with_error(code, message, data, message_id \\ 1) do
+    Poison.encode!(%__MODULE__{
+      jsonrpc: "2.0",
+      id: message_id,
+      error: m(code, data, message)
+    } |> clean_nulls())
+  end
+  
+  @spec clean_nulls(list() | struct() | map()) :: map()
+  defp clean_nulls(data) when is_list(data) do
+    data 
+    |> Enum.map(&(&1 |> clean_nulls()))
+  end
+
+  defp clean_nulls(struct) when is_struct(struct),
+    do: struct |> Map.from_struct() |> clean_nulls()
+
+  defp clean_nulls(map) when is_map(map),
+    do: map |> Map.filter(fn {_, v} -> v != nil end)
 end
 
 defmodule McpEx.Proto.Notification do

@@ -4,7 +4,7 @@ POST  http://localhost:4000/mcp/jep
   "id": 1,
   "method": "initialize",
   "params": {
-    "protocolVersion": "2024-11-05",
+    "protocolVersion": "2025-11-05",
     "capabilities": {
       "roots": {
         "listChanged": true
