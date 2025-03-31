@@ -22,6 +22,9 @@ defmodule McpEx.Proto.Resource do
 
   @spec get_resources_list(atom()) :: list(%__MODULE__{})
   def get_resources_list(module) do
-    McpEx.Server.Info.resources(module)
+    resources = McpEx.Server.Info.resources(module)
+    cast(%__MODULE__{}, 
   end
+
+  @spec resources_read fs
 end

@@ -113,7 +113,7 @@ defmodule McpEx.Server.SSEPlug do
   defp handle_message(conn, %{"id" => msg_id, "method" => "resources/read", "params" => params}) do
     conn.path_params["session_id"]
     |> get_pid_from_id()
-    |> send({:resources_list, msg_id})
+    |> send({:resources_read, msg_id})
 
     conn |> send_resp(200, "OK")
   end
@@ -181,6 +181,10 @@ defmodule McpEx.Server.SSEPlug do
           conn
           |> send_sse_message(resp)
           |> loop()
+        {:resources_read, msg_id, params} ->
+          conn = conn |> ensure_initialized()
+
+          resp = Proto.Resource.read_resource(conn.private.spark_mod, params)
         {:resources_list, msg_id} ->
           conn = conn |> ensure_initialized()
 

@@ -1,4 +1,6 @@
 defmodule McpEx.Proto.ListResourceResult do
+
+  @spec resources_read fs
   use Ecto.Schema
   import Ecto.Changeset
 
